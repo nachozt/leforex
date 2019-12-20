@@ -1,0 +1,8 @@
+<p id="notice"><%= notice %></p>
+
+<%= form_with url: today_path, method: "get", remote: true do |f| %>
+  <%= f.number_field :quantity %>
+  <%= f.submit "Compare" %>
+<% end %>
+
+<div id="institution-rates"></div>
