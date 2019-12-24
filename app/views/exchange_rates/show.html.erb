@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>From:</strong>
+  <%= @exchange_rate.from %>
+</p>
+
+<p>
+  <strong>To:</strong>
+  <%= @exchange_rate.to %>
+</p>
+
+<p>
+  <strong>Rate:</strong>
+  <%= @exchange_rate.rate %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @exchange_rate.date %>
+</p>
+
+<p>
+  <strong>Institution:</strong>
+  <%= @exchange_rate.institution_id %>
+</p>
+
+<%= link_to 'Edit', edit_exchange_rate_path(@exchange_rate) %> |
+<%= link_to 'Back', exchange_rates_path %>
