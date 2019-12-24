@@ -5,8 +5,9 @@ class CompareController < ApplicationController
   end
 
   def today
-    # TODO: add exchange data
     @institutions = Institution.all
+    # TODO: receive "from" and "to" from params
+    @conversion_input = { from: "USD", to: "CLP", quantity: params[:quantity] }
   end
 
   private
