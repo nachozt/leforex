@@ -50,15 +50,16 @@ class Institution < ApplicationRecord
   # it's not supposed to be accessed directly.
   #
   def add_rate(from_iso_code, to_iso_code, rate)
+    # TODO: find by date too
     exrate = rates.find_or_initialize_by(from: from_iso_code, to: to_iso_code)
     exrate.rate = rate
     exrate.date = DateTime.now.utc
     exrate.save!
   end
 
-  # TODO: this method should be run by a job once a day
-  def update_rates
-    # @bank_service.update_rates
+  def update_rate(from_iso_code, to_iso_code)
+    rate = bank_service.get_rate(from_iso_code, to_iso_code)
+    banko.add_rate(from_iso_code, to_iso_code, rate)
   end
 
   def bank_service

@@ -141,4 +141,15 @@ class InstitutionTest < ActiveSupport::TestCase
     ins = Institution.new(name: 'Test Institution', fee: 0, bank: "Manual")
     assert ins.valid?
   end
+
+  #
+  # describe update_rate
+  #
+  test "gets a new rate from bank service and adds a new entry for a new day" do
+    new_rate = 0.98765
+    # TODO: service.stubs and returns new_rate
+    assert_difference 'ExchangeRate.count' do
+      @institution.update_rate('USD', 'CAD')
+    end
+  end
 end
