@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_19_114049) do
+ActiveRecord::Schema.define(version: 2019_12_27_151330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,9 +29,10 @@ ActiveRecord::Schema.define(version: 2019_12_19_114049) do
   create_table "institutions", force: :cascade do |t|
     t.string "name"
     t.decimal "fee"
-    t.string "bank"
+    t.string "bank", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["bank"], name: "index_institutions_on_bank"
   end
 
   add_foreign_key "exchange_rates", "institutions"

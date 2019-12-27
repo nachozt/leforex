@@ -3,7 +3,7 @@ require 'test_helper'
 class InstitutionTest < ActiveSupport::TestCase
   setup do
     # TODO: use factories
-    @institution = Institution.create(name: 'Test Institution', fee: 0)
+    @institution = Institution.create(name: 'Test Institution', fee: 0, bank: "Manual")
     Money.default_bank = @institution.banko
   end
 
@@ -52,7 +52,7 @@ class InstitutionTest < ActiveSupport::TestCase
       @institution.banko.add_rate('USD', 'CAD', 0.9)
     end
     
-    other_institution = Institution.create(name: 'Test Institution', fee: 0)
+    other_institution = Institution.create(name: 'Test Institution', fee: 0, bank: "Manual")
     assert_difference 'ExchangeRate.count' do
       other_institution.banko.add_rate('USD', 'CAD', 0.9)
     end
@@ -82,7 +82,7 @@ class InstitutionTest < ActiveSupport::TestCase
     @institution.banko.add_rate('USD', 'CAD', 0.9)
     first_ins_rate = @institution.banko.get_rate('USD', 'CAD')
 
-    other_institution = Institution.create(name: 'Test Institution', fee: 0)
+    other_institution = Institution.create(name: 'Test Institution', fee: 0, bank: "Manual")
     other_institution.banko.add_rate('USD', 'CAD', 0.8)
     second_ins_rate = other_institution.banko.get_rate('USD', 'CAD')
 
@@ -115,10 +115,30 @@ class InstitutionTest < ActiveSupport::TestCase
     @institution.banko.add_rate('USD', 'CAD', 0.9)
     first_ins_amount = @institution.get_amount('USD', 'CAD', 10)
 
-    other_institution = Institution.create(name: 'Test Institution', fee: 0)
+    other_institution = Institution.create(name: 'Test Institution', fee: 0, bank: "Manual")
     other_institution.banko.add_rate('USD', 'CAD', 0.8)
     second_ins_amount = other_institution.get_amount('USD', 'CAD', 10)
 
     assert_not_equal first_ins_amount, second_ins_amount
+  end
+
+  #
+  # describe valid_bank?
+  #
+  test "returns invalid record if bank is nil" do
+    ins = Institution.new(name: 'Test Institution', fee: 0)
+    refute ins.valid?
+    assert_equal "can't be blank", ins.errors.messages[:bank].first
+  end
+
+  test "returns invalid record if bank does not belong to BANK_LIST" do
+    ins = Institution.new(name: 'Test Institution', fee: 0, bank: "SomeBank")
+    refute ins.valid?
+    assert_equal "Bank name not found", ins.errors.messages[:bank].first
+  end
+
+  test "can create institution with valid bank" do
+    ins = Institution.new(name: 'Test Institution', fee: 0, bank: "Manual")
+    assert ins.valid?
   end
 end

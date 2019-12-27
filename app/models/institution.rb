@@ -1,5 +1,14 @@
 class Institution < ApplicationRecord
   attr_accessor :banko
+  validates :bank, presence: true
+  validate :valid_bank?
+
+  BANK_LIST = [
+    { name: "Manual", type: "manual" },
+    { name: "CurrencyLayer", type: "auto" },
+    { name: "TransferWise", type: "auto" },
+    { name: "BancoDeChile", type: "auto" }
+  ]
 
   def banko
     @banko ||= Money::Bank::VariableExchange.new(self)
@@ -7,6 +16,13 @@ class Institution < ApplicationRecord
 
   def rates
     @rates ||= ExchangeRate.where(institution_id: self.id)
+  end
+
+  def valid_bank?
+    return if bank.blank? # error handled by presence validation
+
+    bnk = BANK_LIST.find{|k,v| k[:name] == bank }
+    errors.add(:bank, "Bank name not found") unless bnk.present?
   end
 
   def set_bank
