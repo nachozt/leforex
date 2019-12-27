@@ -5,7 +5,7 @@ class Institution < ApplicationRecord
 
   BANK_LIST = [
     { name: "Manual", type: "manual" },
-    { name: "CurrencyLayer", type: "auto" },
+    { name: "CurrencyLayerBank", type: "auto" },
     { name: "TransferWise", type: "auto" },
     { name: "BancoDeChile", type: "auto" }
   ]
@@ -54,5 +54,14 @@ class Institution < ApplicationRecord
     exrate.rate = rate
     exrate.date = DateTime.now.utc
     exrate.save!
+  end
+
+  # TODO: this method should be run by a job once a day
+  def update_rates
+    # @bank_service.update_rates
+  end
+
+  def bank_service
+    @bank_service ||= Object.const_get(self.bank).new
   end
 end
