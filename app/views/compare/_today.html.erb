@@ -4,7 +4,6 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Fee</th>
       <th>Cost</th>
       <th colspan="2"></th>
     </tr>
@@ -14,7 +13,6 @@
     <% @institutions.each do |institution| %>
       <tr>
         <td><%= institution.name %></td>
-        <td><%= institution.fee %></td>
         <td><%= dynamic_amount(institution, @conversion_input) %></td>
         <td><%= link_to 'Edit', edit_institution_path(institution) %></td>
         <td><%= link_to 'Destroy', institution, method: :delete, data: { confirm: 'Are you sure?' } %></td>

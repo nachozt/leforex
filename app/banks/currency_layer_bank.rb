@@ -1,10 +1,8 @@
-# require 'open-uri'
-# require 'nokogiri'
-require 'money'
-# require 'money/rates_store/store_with_historical_data_support'
+class CurrencyLayerBank < BaseBank
+  def initialize
+  end
 
-class CurrencyLayerBank < Money::Bank::VariableExchange
-  def initialize() # TODO: pass InstitutionRates instance
-    super
+  def get_rate(from_iso_code, to_iso_code)
+    750
   end
 end
